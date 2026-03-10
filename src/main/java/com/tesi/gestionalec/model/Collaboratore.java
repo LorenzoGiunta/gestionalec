@@ -2,11 +2,15 @@ package com.tesi.gestionalec.model;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @DiscriminatorValue("COLLABORATORE")
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Collaboratore extends Utente {
 
     /*
