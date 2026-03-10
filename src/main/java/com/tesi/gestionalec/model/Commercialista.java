@@ -3,11 +3,13 @@ package com.tesi.gestionalec.model;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import lombok.Data;
 
 @Entity
 // Il "DiscriminatorValue" serve per sostituire "commercialista" al ruolo dello user
 // Spring lo collega direttamente con l'annotation @Inheritance e @DiscriminatorColumn della classe User
 @DiscriminatorValue("COMMERCIALISTA")
+@Data
 public class Commercialista extends Utente {
 
     private String numeroAlbo;

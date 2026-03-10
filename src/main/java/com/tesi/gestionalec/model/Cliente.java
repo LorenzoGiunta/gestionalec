@@ -2,9 +2,11 @@ package com.tesi.gestionalec.model;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @DiscriminatorValue("CLIENTE")
+@Data
 public class Cliente extends Utente {
 
     @Column(unique = true)
@@ -25,8 +27,6 @@ public class Cliente extends Utente {
     private List<Documento> documenti;
 
     */
-
-
 
     @Override
     public Ruolo getRuolo() {

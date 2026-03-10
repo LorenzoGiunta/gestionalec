@@ -2,10 +2,12 @@ package com.tesi.gestionalec.model;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "Role")
+@Data
 public abstract class Utente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,5 +25,4 @@ public abstract class Utente {
     private boolean enabled;
 
     public abstract Ruolo getRuolo();
-
 }
