@@ -21,7 +21,7 @@ public class Cliente extends Utente {
     @Enumerated(EnumType.STRING)
     private RegimeFiscale regime;
 
-    private Double redditoAnno;
+    private Double redditoAnnuo;
 
     /* Relazioni
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
