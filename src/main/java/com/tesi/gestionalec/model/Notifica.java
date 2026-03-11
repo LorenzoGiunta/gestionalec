@@ -8,12 +8,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "notifiche")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"destinatario"})
 public class Notifica {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

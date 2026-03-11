@@ -35,7 +35,6 @@ public class Documento {
     @Column(nullable = false)
     private StatoDocumento stato;   // IN_REVISIONE, APPROVATO, RIFIUTATO
 
-    @Column(nullable = true)
     private String motivazioneRifiuto;  // compilato solo se RIFIUTATO
 
     // Versionamento
@@ -52,7 +51,7 @@ public class Documento {
     private Cliente caricatoDa;
 
     @ManyToOne
-    @JoinColumn(name = "revisore_id")
+    @JoinColumn(name = "revisore")
     private Collaboratore revisore;  // assegnato per la revisione preliminare
 
     @CreationTimestamp

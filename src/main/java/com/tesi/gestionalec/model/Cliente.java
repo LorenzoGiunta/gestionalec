@@ -4,11 +4,13 @@ package com.tesi.gestionalec.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @DiscriminatorValue("CLIENTE")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"pratiche" , "documenti"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cliente extends Utente {
@@ -23,14 +25,12 @@ public class Cliente extends Utente {
 
     private Double redditoAnnuo;
 
-    /* Relazioni
+
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Pratica> pratiche;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "caricatoDa", cascade = CascadeType.ALL)
     private List<Documento> documenti;
-
-    */
 
     @Override
     public Ruolo getRuolo() {
