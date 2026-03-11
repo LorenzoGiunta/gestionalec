@@ -6,8 +6,7 @@ import com.tesi.gestionalec.model.Pratica;
 
 import java.util.List;
 
-public interface CollaboratoreService {
-    Collaboratore trovaPerId(Long id);
+public interface CollaboratoreService extends UtenteService{
     List<Pratica> trovaPraticheAssegnate(Long collaboratoreId);
     List<Documento> trovaDocumentiInRevisione(Long collaboratoreId);
     void approvaDocumento(Long documentoId);

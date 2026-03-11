@@ -6,9 +6,7 @@ import com.tesi.gestionalec.model.Pratica;
 
 import java.util.List;
 
-public interface ClienteService {
-    Cliente trovaPerId(Long id);
-    Cliente trovaPerEmail(String email);
+public interface ClienteService extends UtenteService{
     Cliente trovaPerCodFiscale(String codFiscale);
     List<Pratica> trovaPratiche(Long clienteId);
     List<Documento> trovaDocumenti(Long clienteId);
