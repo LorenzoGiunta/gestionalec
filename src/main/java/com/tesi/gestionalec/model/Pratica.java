@@ -1,6 +1,7 @@
 package com.tesi.gestionalec.model;
 
 
+import com.tesi.gestionalec.state.*;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -41,4 +42,19 @@ public class Pratica {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime dataCreazione;
+
+    //non salvato nel DB, solo in memoria per lo State Pattern
+    @Transient
+    private StatoPraticaState statoCorrente;
+
+    //ricostruisce statoCorrente ogni volta che JPA carica la Pratica
+    @PostLoad
+    private void inizializzaStato() {
+        this.statoCorrente = switch (this.stato) {
+            case BOZZA               -> new BozzaState();
+            case IN_LAVORAZIONE      -> new InLavorazioneState();
+            case IN_ATTESA_DOCUMENTI -> new InAttesaDocumentiState();
+            case COMPLETATA          -> new CompletataState();
+        };
+    }
 }

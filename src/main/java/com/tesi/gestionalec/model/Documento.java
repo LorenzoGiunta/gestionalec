@@ -58,5 +58,4 @@ public class Documento {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime dataCaricamento;
-
 }
