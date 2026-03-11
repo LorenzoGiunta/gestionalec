@@ -2,13 +2,17 @@ package com.tesi.gestionalec.model;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.util.List;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = {"listaDocumenti", "cliente", "assegnataA"})
 public class Pratica {
 
     @Id
@@ -26,7 +30,6 @@ public class Pratica {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatoPratica stato;       // BOZZA, IN_LAVORAZIONE, IN_ATTESA_DOCUMENTI, COMPLETATA
-
 
     @ManyToOne
     @JoinColumn(name = "assegnata_a_id")

@@ -2,14 +2,18 @@ package com.tesi.gestionalec.model;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = {"pratica", "caricatoDa", "revisore"})
 public class Documento {
 
     @Id

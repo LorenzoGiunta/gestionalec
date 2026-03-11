@@ -2,11 +2,15 @@ package com.tesi.gestionalec.model;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @DiscriminatorValue("CLIENTE")
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Cliente extends Utente {
 
     @Column(unique = true)
@@ -17,7 +21,7 @@ public class Cliente extends Utente {
     @Enumerated(EnumType.STRING)
     private RegimeFiscale regime;
 
-    private Double redditoAnno;
+    private Double redditoAnnuo;
 
     /* Relazioni
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
