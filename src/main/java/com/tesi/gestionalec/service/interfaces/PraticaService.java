@@ -3,6 +3,8 @@ package com.tesi.gestionalec.service.interfaces;
 import com.tesi.gestionalec.model.Collaboratore;
 import com.tesi.gestionalec.model.Cliente;
 import com.tesi.gestionalec.model.Pratica;
+import com.tesi.gestionalec.model.StatoPratica;
+
 import java.util.List;
 
 public interface PraticaService {
@@ -13,4 +15,5 @@ public interface PraticaService {
     List<Pratica> trovaPerCollaboratore(Collaboratore collaboratore);
     void avanzaStato(Long praticaId);
     void assegnaCollaboratore(Long praticaId, Long collaboratoreId);
+    List<Pratica> trovaPerStato(StatoPratica stato);
 }

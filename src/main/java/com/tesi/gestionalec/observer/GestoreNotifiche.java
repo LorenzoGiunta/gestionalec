@@ -1,6 +1,8 @@
 package com.tesi.gestionalec.observer;
 
 import com.tesi.gestionalec.model.Notifica;
+import com.tesi.gestionalec.observer.interfaces.NotificaObservable;
+import com.tesi.gestionalec.observer.interfaces.NotificaObserver;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.util.List;
 
 
 @Component
-public class GestoreNotifiche implements NotificaObservable{
+public class GestoreNotifiche implements NotificaObservable {
 
     private final List<NotificaObserver> observers = new ArrayList<>();
 

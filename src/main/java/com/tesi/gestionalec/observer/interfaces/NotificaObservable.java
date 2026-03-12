@@ -1,4 +1,4 @@
-package com.tesi.gestionalec.observer;
+package com.tesi.gestionalec.observer.interfaces;
 
 import com.tesi.gestionalec.model.Notifica;
 
