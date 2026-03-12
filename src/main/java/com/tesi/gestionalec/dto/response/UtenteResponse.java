@@ -2,8 +2,10 @@ package com.tesi.gestionalec.dto.response;
 
 import com.tesi.gestionalec.model.Ruolo;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@RequiredArgsConstructor
 public class UtenteResponse {
     private Long id;
     private String nome;
