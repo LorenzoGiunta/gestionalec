@@ -14,31 +14,38 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "ruolo")
+@DiscriminatorColumn(name = "ruolo", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
 @ToString
 public abstract class Utente implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nome;
     private String cognome;
 
-    @Column(unique = true , nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    // se per caso l'admin vuole disattivare l'utente
     private boolean enabled;
+
+    // espone la colonna discriminante come campo leggibile
+    @Column(name = "ruolo", insertable = false, updatable = false)
+    private String ruoloDiscriminante;
 
     public abstract Ruolo getRuolo();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + getRuolo().name()));
+        Ruolo r = getRuolo();
+        if (r == null) return List.of();   // evita NullPointerException durante startup
+        return List.of(new SimpleGrantedAuthority("ROLE_" + r.name()));
     }
 
     @Override

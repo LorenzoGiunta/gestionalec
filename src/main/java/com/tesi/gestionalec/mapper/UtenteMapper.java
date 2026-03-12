@@ -3,9 +3,9 @@ package com.tesi.gestionalec.mapper;
 import com.tesi.gestionalec.dto.response.UtenteResponse;
 import com.tesi.gestionalec.model.Utente;
 
-public class UtetenteMapper {
+public class UtenteMapper {
 
-    public static UtenteResponse ToResponse(Utente u){
+    public static UtenteResponse toResponse(Utente u){
         UtenteResponse dto = new UtenteResponse();
         dto.setId(u.getId());
         dto.setNome(u.getNome());
