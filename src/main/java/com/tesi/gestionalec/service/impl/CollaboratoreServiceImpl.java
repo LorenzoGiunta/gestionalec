@@ -8,6 +8,7 @@ import com.tesi.gestionalec.repository.CollaboratoreRepo;
 import com.tesi.gestionalec.repository.DocumentoRepo;
 import com.tesi.gestionalec.repository.UtenteRepo;
 import com.tesi.gestionalec.service.interfaces.CollaboratoreService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,10 +21,10 @@ public class CollaboratoreServiceImpl extends UtenteServiceImpl implements Colla
 
     public CollaboratoreServiceImpl(
             UtenteRepo utenteRepository,
-            //PasswordEncoder passwordEncoder,
+            PasswordEncoder passwordEncoder,
             CollaboratoreRepo collaboratoreRepository,
             DocumentoRepo documentoRepository) {        // ← aggiunto
-        super(utenteRepository/*, passwordEncoder*/);
+        super(utenteRepository, passwordEncoder);
         this.collaboratoreRepo = collaboratoreRepository;
         this.documentoRepo = documentoRepository;       // ← aggiunto
     }

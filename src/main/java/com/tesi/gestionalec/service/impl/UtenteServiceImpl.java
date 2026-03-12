@@ -6,6 +6,9 @@ import com.tesi.gestionalec.repository.UtenteRepo;
 import com.tesi.gestionalec.service.interfaces.UtenteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +17,14 @@ import java.util.List;
 @Primary
 @Service
 @RequiredArgsConstructor
-public class UtenteServiceImpl implements UtenteService {
+public class UtenteServiceImpl implements UtenteService, UserDetailsService {
 
     protected final UtenteRepo repo;
-    // protected final PasswordEncoder passwordEncoder;
+    protected final PasswordEncoder passwordEncoder;
 
     @Override
     public Utente registra(Utente utente) {
-        //utente.setPassword(passwordEncoder.encode(utente.getPassword()));
+        utente.setPassword(passwordEncoder.encode(utente.getPassword()));
         utente.setEnabled(true);
         return repo.save(utente);
     }
@@ -63,11 +66,11 @@ public class UtenteServiceImpl implements UtenteService {
         repo.deleteById(id);
     }
 
-    /* Spring Security chiama questo metodo automaticamente durante il login
+    //Spring Security chiama questo metodo automaticamente durante il login
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return utenteRepository.findByEmail(email)
+        return repo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato: " + email));
     }
-    */
+
 }

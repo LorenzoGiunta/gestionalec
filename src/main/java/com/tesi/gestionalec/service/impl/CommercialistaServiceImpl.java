@@ -21,12 +21,12 @@ public class CommercialistaServiceImpl extends UtenteServiceImpl implements Comm
 
     public CommercialistaServiceImpl(
             UtenteRepo utenteRepository,
-            //PasswordEncoder passwordEncoder,
+            PasswordEncoder passwordEncoder,
             PraticaRepo praticaRepository,
             CollaboratoreRepo collaboratoreRepository,
             ClienteRepo clienteRepo,
             CalcoloImposteService calcoloImposte) {
-        super(utenteRepository/*, passwordEncoder*/);
+        super(utenteRepository, passwordEncoder);
         this.praticaRepository = praticaRepository;
         this.collaboratoreRepository = collaboratoreRepository;
         this.clienteRepo = clienteRepo;

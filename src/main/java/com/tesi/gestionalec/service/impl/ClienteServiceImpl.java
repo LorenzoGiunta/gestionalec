@@ -19,9 +19,9 @@ public class ClienteServiceImpl extends UtenteServiceImpl implements ClienteServ
 
     public ClienteServiceImpl(
             UtenteRepo utenteRepository,
-            //PasswordEncoder passwordEncoder,
+            PasswordEncoder passwordEncoder,
             ClienteRepo clienteRepository) {
-        super(utenteRepository/*,passwordEncoder*/);
+        super(utenteRepository,passwordEncoder);
         this.clienteRepository = clienteRepository;
     }
 

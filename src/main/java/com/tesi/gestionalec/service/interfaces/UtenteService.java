@@ -1,6 +1,8 @@
 package com.tesi.gestionalec.service.interfaces;
 
 import com.tesi.gestionalec.model.Utente;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 

@@ -18,9 +18,9 @@ public class AmministratoreServiceImpl extends UtenteServiceImpl implements Ammi
     // costruttore manuale — necessario con l'ereditarietà (Lombok non gestisce super())
     public AmministratoreServiceImpl(
             UtenteRepo utenteRepository,
-            //PasswordEncoder passwordEncoder,
+            PasswordEncoder passwordEncoder,
             AmministratoreRepo amministratoreRepository) {
-        super(utenteRepository/*,passwordEncoder*/);   // passa i campi al parent
+        super(utenteRepository ,passwordEncoder);   // passa i campi al parent
         this.amministratoreRepository = amministratoreRepository;
     }
 
