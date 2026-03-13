@@ -22,10 +22,4 @@ public class Commercialista extends Utente {
     public Ruolo getRuolo() {
         return Ruolo.COMMERCIALISTA;
     }
-
-    /* Da implementare bene quando facciamo la security
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_COMMERCIALISTA"));
-    }*/
 }

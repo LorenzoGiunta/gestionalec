@@ -12,7 +12,7 @@ import java.util.List;
 @DiscriminatorValue("COLLABORATORE")
 @Getter
 @Setter
-@ToString(exclude = {"praticheAssegnate" , "documentoList"})
+@ToString(exclude = {"praticheAssegnate" , "documentiInRevisione"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class Collaboratore extends Utente {
@@ -23,7 +23,7 @@ public class Collaboratore extends Utente {
 
     // Documenti che ha in carico per la revisione preliminare
     @OneToMany(mappedBy = "revisore", cascade = CascadeType.ALL)
-    private List<Documento> documentoList;
+    private List<Documento> documentiInRevisione;
 
     @Override
     public Ruolo getRuolo() {

@@ -3,8 +3,8 @@ package com.tesi.gestionalec.model;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.*;
-
 import java.time.LocalDateTime;
+
 
 @Entity
 @DiscriminatorValue("AMMINISTRATORE")
