@@ -19,7 +19,6 @@ public class AmministratoreController {
     private final AmministratoreService amministratoreService;
 
 
-
     // TO-DO : Solo l'amministratore può creare altri amministratori
 
     @GetMapping("/utenti")
