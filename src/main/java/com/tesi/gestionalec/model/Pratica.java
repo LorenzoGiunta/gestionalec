@@ -5,6 +5,8 @@ import com.tesi.gestionalec.state.*;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.time.LocalDateTime;
 
@@ -35,6 +37,8 @@ public class Pratica {
     @ManyToOne
     @JoinColumn(name = "assegnata_a_id")
     private Collaboratore assegnataA;  // può essere null se non ancora assegnata
+
+    private LocalDate scadenza;
 
     @OneToMany(mappedBy = "pratica", cascade = CascadeType.ALL)
     private List<Documento> listaDocumenti;
