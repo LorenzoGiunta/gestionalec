@@ -3,7 +3,6 @@ package com.tesi.gestionalec.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.List;
 
 @Entity
