@@ -48,6 +48,7 @@ public class GestoreFilterChain {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("AMMINISTRATORE")
                         .requestMatchers("/api/commercialista/**").hasRole("COMMERCIALISTA")
                         .requestMatchers("/api/collaboratore/**").hasRole("COLLABORATORE")
