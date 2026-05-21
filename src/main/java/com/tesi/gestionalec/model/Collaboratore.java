@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,6 +25,21 @@ public class Collaboratore extends Utente {
     // Documenti che ha in carico per la revisione preliminare
     @OneToMany(mappedBy = "revisore", cascade = CascadeType.ALL)
     private List<Documento> documentiInRevisione;
+
+    // Tutte le associazioni (PENDING, ACCEPTED, DECLINED, EXPIRED) con i commercialisti
+    @OneToMany(mappedBy = "collaboratore", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<InvitoCollaborazione> associazioni = new ArrayList<>();
+
+    /**
+     * Restituisce solo i Commercialisti con cui l'associazione è ACCEPTED.
+     * Metodo di comodo — evita query esplicite nel service per il caso comune.
+     */
+    public List<Commercialista> getCommercialisti() {
+        return associazioni.stream()
+                .filter(i -> i.getStato() == StatoInvito.ACCEPTED)
+                .map(InvitoCollaborazione::getCommercialista)
+                .toList();
+    }
 
     @Override
     public Ruolo getRuolo() {

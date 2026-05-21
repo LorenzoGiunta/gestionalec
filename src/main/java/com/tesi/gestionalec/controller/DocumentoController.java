@@ -77,6 +77,43 @@ public class DocumentoController {
     }
 
     /**
+     * POST /api/documenti/{id}/nuova-versione
+     * Carica una nuova versione di un documento esistente (multipart/form-data).
+     *
+     * Il service si occupa di:
+     *   - incrementare automaticamente il numero di versione (vecchio.versione + 1)
+     *   - reimpostare lo stato a IN_REVISIONE
+     *   - ereditare pratica e cliente dal documento originale
+     *
+     * Il client deve inviare solo il nuovo file (e opzionalmente un nuovo nome).
+     * La pratica e il cliente vengono copiati dal documento {id} esistente.
+     */
+    @PostMapping(value = "/{id}/nuova-versione", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    public ResponseEntity<DocumentoResponse> nuovaVersione(
+            @PathVariable Long id,
+            @RequestPart("file")               MultipartFile file,
+            @RequestPart(value = "nome", required = false) String nome,
+            @RequestPart("tipoFile")            String tipoFile) throws IOException {
+
+        // 1. Salva il nuovo file fisico su disco
+        String percorsoFile = fileStorageService.salva(file);
+
+        // 2. Costruisce il Documento con i nuovi metadati
+        //    pratica, cliente e versione vengono ereditati dal service
+        Documento nuovoDocumento = new Documento();
+        nuovoDocumento.setNome((nome == null || nome.isBlank()) ? file.getOriginalFilename() : nome);
+        nuovoDocumento.setTipoFile(tipoFile);
+        nuovoDocumento.setPercorsoFile(percorsoFile);
+        nuovoDocumento.setDimensione(file.getSize());
+
+        // 3. Delega al service: incrementa versione, copia pratica/cliente, salva
+        return ResponseEntity.ok(
+                DocumentoMapper.toResponse(documentoService.nuovaVersione(id, nuovoDocumento))
+        );
+    }
+
+    /**
      * GET /api/documenti/{id}/download
      * Scarica il file fisico dal disco.
      */
@@ -111,5 +148,17 @@ public class DocumentoController {
                                                 @PathVariable Long collaboratoreId) {
         documentoService.assegnaRevisore(id, collaboratoreId);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * DELETE /api/documenti/{id}
+     * Soft delete: imposta deleted=true nel DB. Il file fisico rimane su disco.
+     * Solo il commercialista può eliminare documenti.
+     */
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_COMMERCIALISTA')")
+    public ResponseEntity<Void> elimina(@PathVariable Long id) {
+        documentoService.eliminaDocumento(id);
+        return ResponseEntity.noContent().build();
     }
 }

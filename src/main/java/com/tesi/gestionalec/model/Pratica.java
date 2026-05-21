@@ -3,14 +3,25 @@ package com.tesi.gestionalec.model;
 
 import com.tesi.gestionalec.state.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.time.LocalDateTime;
 
+/**
+ * Pratica fiscale aperta per un Cliente.
+ *
+ * SOFT DELETE: il campo {@code deleted} viene impostato a {@code true} al posto
+ * dell'eliminazione fisica. L'annotazione {@code @SQLRestriction} fa sì che
+ * Hibernate aggiunga automaticamente {@code WHERE deleted = false} a tutte le
+ * query su questa entità, preservando lo storico fiscale nel DB.
+ */
 @Entity
+@SQLRestriction("deleted = false")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,14 +33,17 @@ public class Pratica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Il cliente è obbligatorio")
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
+    @NotNull(message = "Il tipo di pratica è obbligatorio")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoPratica tipoPratica;  // es. DICHIARAZIONE_REDDIT
 
+    @NotNull(message = "Lo stato della pratica è obbligatorio")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatoPratica stato;       // BOZZA, IN_LAVORAZIONE, IN_ATTESA_DOCUMENTI, COMPLETATA
@@ -50,6 +64,14 @@ public class Pratica {
     //non salvato nel DB, solo in memoria per lo State Pattern
     @Transient
     private StatoPraticaState statoCorrente;
+
+    // ── Soft Delete ──────────────────────────────────────────────────────────
+    @Column(nullable = false)
+    private boolean deleted = false;     // false di default → pratica attiva
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;     // timestamp dell'eliminazione logica
+    // ────────────────────────────────────────────────────────────────────────
 
     //ricostruisce statoCorrente ogni volta che JPA carica la Pratica
     @PostLoad

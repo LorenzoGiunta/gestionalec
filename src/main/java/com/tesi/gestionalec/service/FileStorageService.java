@@ -1,5 +1,6 @@
 package com.tesi.gestionalec.service;
 
+import com.tesi.gestionalec.exception.FileNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -49,7 +50,7 @@ public class FileStorageService {
         if (resource.exists() && resource.isReadable()) {
             return resource;
         }
-        throw new RuntimeException("File non trovato o non leggibile: " + percorsoRelativo);
+        throw new FileNotFoundException(percorsoRelativo);
     }
 
     /**

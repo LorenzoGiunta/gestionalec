@@ -4,6 +4,7 @@ import com.tesi.gestionalec.model.Notifica;
 import com.tesi.gestionalec.observer.interfaces.NotificaObserver;
 import com.tesi.gestionalec.service.impl.EmailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,7 +13,14 @@ public class EmailNotificaObserver implements NotificaObserver {
 
     private final EmailService emailService;
 
+    /**
+     * Invio asincrono della notifica via email.
+     * Gira su un thread del pool "notificaExecutor" → il thread HTTP viene
+     * liberato immediatamente senza aspettare la risposta SMTP.
+     * @Async funziona perché viene chiamato dall'esterno del bean (via proxy Spring AOP).
+     */
     @Override
+    @Async("notificaExecutor")
     public void aggiorna(Notifica notifica) {
         String email = notifica.getDestinatario().getEmail();
 
@@ -37,4 +45,4 @@ public class EmailNotificaObserver implements NotificaObserver {
                 notifica.getMessaggio()
         );
     }
-}
+}

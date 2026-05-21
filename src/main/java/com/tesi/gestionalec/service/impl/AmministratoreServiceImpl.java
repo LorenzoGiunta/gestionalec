@@ -1,5 +1,6 @@
 package com.tesi.gestionalec.service.impl;
 
+import com.tesi.gestionalec.exception.ResourceNotFoundException;
 import com.tesi.gestionalec.model.Amministratore;
 import com.tesi.gestionalec.model.Utente;
 import com.tesi.gestionalec.repository.AmministratoreRepo;
@@ -29,7 +30,7 @@ public class AmministratoreServiceImpl extends UtenteServiceImpl implements Ammi
     @Override
     public void aggiornaUltimaAzione(Long amministratoreId) {
         Amministratore admin = amministratoreRepository.findById(amministratoreId)
-                .orElseThrow(() -> new RuntimeException("Amministratore non trovato"));
+                .orElseThrow(() -> new ResourceNotFoundException("Amministratore", "id", amministratoreId));
         admin.setUltimaAzioneAmministrativa(LocalDateTime.now());
         amministratoreRepository.save(admin);
     }

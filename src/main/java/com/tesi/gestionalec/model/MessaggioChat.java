@@ -1,6 +1,8 @@
 package com.tesi.gestionalec.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
@@ -14,14 +16,17 @@ public class MessaggioChat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Il mittente è obbligatorio")
     @ManyToOne
     @JoinColumn(name = "mittente_id", nullable = false)
     private Utente mittente;
 
+    @NotNull(message = "Il destinatario è obbligatorio")
     @ManyToOne
     @JoinColumn(name = "destinatario_id", nullable = false)
     private Utente destinatario;
 
+    @NotBlank(message = "Il testo del messaggio è obbligatorio")
     @Column(nullable = false)
     private String testo;
 

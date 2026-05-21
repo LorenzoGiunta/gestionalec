@@ -13,6 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class ChatController {
 
     // WebSocket — invia messaggio in tempo reale
     @MessageMapping("/chat.invia")
-    public void inviaMessaggio(@Payload MessaggioChatRequest request,
+    public void inviaMessaggio(@Valid @Payload MessaggioChatRequest request,
                                @AuthenticationPrincipal Utente mittente) {
         if (mittente.getRuolo() == Ruolo.AMMINISTRATORE) {
             throw new AccessDeniedException("L'amministratore non può usare la chat");

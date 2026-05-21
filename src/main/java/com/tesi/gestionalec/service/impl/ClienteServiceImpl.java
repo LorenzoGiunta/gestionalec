@@ -1,6 +1,7 @@
 package com.tesi.gestionalec.service.impl;
 
 
+import com.tesi.gestionalec.exception.ResourceNotFoundException;
 import com.tesi.gestionalec.model.Cliente;
 import com.tesi.gestionalec.model.Documento;
 import com.tesi.gestionalec.model.Pratica;
@@ -30,7 +31,7 @@ public class ClienteServiceImpl extends UtenteServiceImpl implements ClienteServ
     @Override
     public Cliente trovaPerCodFiscale(String codFiscale) {
         return clienteRepository.findByCodFiscale(codFiscale)
-                .orElseThrow(() -> new RuntimeException("Cliente non trovato con CF: " + codFiscale));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "codice fiscale", codFiscale));
     }
 
     @Override
@@ -60,6 +61,6 @@ public class ClienteServiceImpl extends UtenteServiceImpl implements ClienteServ
 
     private Cliente trovaClientePerId(Long id) {
         return clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente non trovato con id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "id", id));
     }
 }

@@ -51,12 +51,15 @@ public class GestoreFilterChain {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
+                        // rifiuto invito accessibile senza login (link diretto da email)
+                        .requestMatchers("/api/inviti/*/rifiuta").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("AMMINISTRATORE")
                         .requestMatchers("/api/commercialista/**").hasRole("COMMERCIALISTA")
                         .requestMatchers("/api/collaboratore/**").hasRole("COLLABORATORE")
                         .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
                         .anyRequest().authenticated()
                 )
+
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(filterDiAutenticazione,
                         UsernamePasswordAuthenticationFilter.class);
