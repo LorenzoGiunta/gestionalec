@@ -1,4 +1,4 @@
-package com.tesi.gestionalec.security;
+package com.tesi.gestionalec.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

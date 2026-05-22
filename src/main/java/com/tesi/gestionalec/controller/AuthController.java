@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,7 @@ public class AuthController {
     private final AuthenticationManager authManager;
 
     @PostMapping("/registra")
-    public ResponseEntity<AuthResponse> registra(@RequestBody RegistrazioneRequest request){
+    public ResponseEntity<AuthResponse> registra(@Valid @RequestBody RegistrazioneRequest request){
 
         Utente utente = RegistrazioneMapper.toModel(request);
         Utente salvato = utenteService.registra(utente);
@@ -44,7 +45,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         // Spring Security verifica email + password automaticamente
         Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

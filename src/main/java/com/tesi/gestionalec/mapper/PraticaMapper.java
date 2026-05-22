@@ -14,6 +14,7 @@ public class PraticaMapper {
         dto.setTipoPratica(pratica.getTipoPratica());
         dto.setStato(pratica.getStato());
         dto.setDataCreazione(pratica.getDataCreazione());
+        dto.setScadenza(pratica.getScadenza());
 
         // dal model Cliente prendi solo il nome — eviti di esporre tutto l'oggetto
         dto.setNomeCliente(
@@ -35,6 +36,7 @@ public class PraticaMapper {
         Pratica pratica = new Pratica();
         pratica.setCliente(cliente);
         pratica.setTipoPratica(request.getTipoPratica());
+        pratica.setScadenza(request.getScadenza());
         return pratica;
         // stato e dataCreazione li imposta il service/JPA — non il mapper
     }

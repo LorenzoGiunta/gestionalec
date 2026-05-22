@@ -24,10 +24,23 @@ public class GestoreNotifiche implements NotificaObservable {
         observers.remove(observer);
     }
 
+    /**
+     * Propaga la notifica a tutti gli observer registrati.
+     *
+     * Il ciclo for ritorna quasi istantaneamente: ogni observer ha il proprio
+     * metodo aggiorna() annotato con @Async("notificaExecutor"), quindi Spring
+     * smista il lavoro su thread del pool e libera subito il thread HTTP.
+     *
+     * Flusso risultante:
+     *   Thread HTTP  →  notificaTutti()  →  [dispatcha su notifica-thread-X]
+     *                                     ↘  DatabaseNotificaObserver.aggiorna()  (async)
+     *                                     ↘  EmailNotificaObserver.aggiorna()     (async)
+     *   Thread HTTP ritorna alla risposta REST immediatamente ↑
+     */
     @Override
     public void notificaTutti(Notifica notifica) {
         for (NotificaObserver observer : observers) {
-            observer.aggiorna(notifica);    // notifica ognuno
+            observer.aggiorna(notifica);    // dispatcha su thread asincrono
         }
     }
 }

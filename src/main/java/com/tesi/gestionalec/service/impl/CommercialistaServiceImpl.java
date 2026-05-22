@@ -1,4 +1,5 @@
 package com.tesi.gestionalec.service.impl;
+import com.tesi.gestionalec.exception.ResourceNotFoundException;
 import com.tesi.gestionalec.model.Cliente;
 import com.tesi.gestionalec.model.Collaboratore;
 import com.tesi.gestionalec.model.Pratica;
@@ -43,7 +44,7 @@ public class CommercialistaServiceImpl extends UtenteServiceImpl implements Comm
         Pratica pratica = trovaById(praticaId);
 
         Collaboratore collaboratore = collaboratoreRepository.findById(collaboratoreId)
-                .orElseThrow(() -> new RuntimeException("Collaboratore non trovato con id: " + collaboratoreId));
+                .orElseThrow(() -> new ResourceNotFoundException("Collaboratore", "id", collaboratoreId));
 
         pratica.setAssegnataA(collaboratore);
         praticaRepository.save(pratica);
@@ -60,12 +61,12 @@ public class CommercialistaServiceImpl extends UtenteServiceImpl implements Comm
     @Override
     public double calcolaImposteCliente(Long clienteId) {
         Cliente cliente = clienteRepo.findById(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente non trovato con id: " + clienteId));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "id", clienteId));
         return calcoloImposte.CalcolaPerCliente(cliente);
     }
 
     private Pratica trovaById(Long id){
         return praticaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pratica non trovata con id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Pratica", "id", id));
     }
 }

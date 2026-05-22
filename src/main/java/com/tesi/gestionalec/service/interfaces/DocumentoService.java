@@ -10,4 +10,5 @@ public interface DocumentoService {
     List<Documento> trovaPerPratica(Pratica pratica);
     Documento nuovaVersione(Long documentoId, Documento nuovoDocumento);
     void assegnaRevisore(Long documentoId, Long collaboratoreId);
+    void eliminaDocumento(Long id);      // soft delete → imposta deleted=true
 }

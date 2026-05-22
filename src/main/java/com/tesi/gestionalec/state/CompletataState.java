@@ -1,5 +1,6 @@
 package com.tesi.gestionalec.state;
 
+import com.tesi.gestionalec.exception.InvalidStateException;
 import com.tesi.gestionalec.model.Pratica;
 import com.tesi.gestionalec.model.StatoPratica;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class CompletataState implements StatoPraticaState{
     @Override
     public void avanza(Pratica pratica) {
-        throw new IllegalStateException("La pratica è stata completatta");
+        throw new InvalidStateException("Pratica", StatoPratica.COMPLETATA.name(), "avanza");
     }
 
     @Override
@@ -18,3 +19,4 @@ public class CompletataState implements StatoPraticaState{
         return StatoPratica.COMPLETATA;
     }
 }
+

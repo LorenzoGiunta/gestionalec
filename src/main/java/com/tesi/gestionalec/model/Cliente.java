@@ -2,8 +2,9 @@ package com.tesi.gestionalec.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
-
 import java.util.List;
 
 @Entity
@@ -15,14 +16,17 @@ import java.util.List;
 @NoArgsConstructor
 public class Cliente extends Utente {
 
+    @Pattern(regexp = "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$", message = "Codice fiscale non valido")
     @Column(unique = true)
     private String codFiscale;
 
+    @Pattern(regexp = "^[0-9]{11}$", message = "Partita IVA non valida")
     private String pIVA;
 
     @Enumerated(EnumType.STRING)
     private RegimeFiscale regime;
 
+    @PositiveOrZero(message = "Il reddito annuo non può essere negativo")
     private Double redditoAnnuo;
 
 

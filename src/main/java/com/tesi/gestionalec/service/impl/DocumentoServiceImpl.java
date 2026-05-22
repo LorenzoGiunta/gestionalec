@@ -1,6 +1,7 @@
 package com.tesi.gestionalec.service.impl;
 
 
+import com.tesi.gestionalec.exception.ResourceNotFoundException;
 import com.tesi.gestionalec.model.Collaboratore;
 import com.tesi.gestionalec.model.Documento;
 import com.tesi.gestionalec.model.Pratica;
@@ -11,6 +12,7 @@ import com.tesi.gestionalec.service.interfaces.DocumentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,7 +34,7 @@ public class DocumentoServiceImpl implements DocumentoService {
     @Override
     public Documento trovaPerId(Long id) {
         return documentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Documento non trovato con id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Documento", "id", id));
     }
 
     @Override
@@ -54,10 +56,23 @@ public class DocumentoServiceImpl implements DocumentoService {
     public void assegnaRevisore(Long documentoId, Long collaboratoreId) {
         Documento documento = trovaPerId(documentoId);
         Collaboratore collaboratore = collaboratoreRepository.findById(collaboratoreId)
-                .orElseThrow(() -> new RuntimeException("Collaboratore non trovato con id: " + collaboratoreId));
+                .orElseThrow(() -> new ResourceNotFoundException("Collaboratore", "id", collaboratoreId));
         documento.setRevisore(collaboratore);
         documentoRepository.save(documento);
     }
 
+    /**
+     * Soft Delete: non cancella il file né il record dal DB.
+     * Imposta deleted=true e registra il timestamp. Il documento diventa
+     * invisibile a tutte le query grazie a @SQLRestriction sull'entità,
+     * ma il file fisico e i metadati sono preservati per audit fiscale.
+     */
+    @Override
+    public void eliminaDocumento(Long id) {
+        Documento documento = trovaPerId(id);
+        documento.setDeleted(true);
+        documento.setDeletedAt(LocalDateTime.now());
+        documentoRepository.save(documento);
+    }
 
 }

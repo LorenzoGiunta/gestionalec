@@ -1,5 +1,6 @@
 package com.tesi.gestionalec.service.impl;
 
+import com.tesi.gestionalec.exception.ResourceNotFoundException;
 import com.tesi.gestionalec.model.Collaboratore;
 import com.tesi.gestionalec.model.Documento;
 import com.tesi.gestionalec.model.Pratica;
@@ -43,7 +44,7 @@ public class CollaboratoreServiceImpl extends UtenteServiceImpl implements Colla
     @Override
     public void approvaDocumento(Long documentoId) {
         Documento doc = documentoRepo.findById(documentoId)
-                .orElseThrow(() -> new RuntimeException("Documento non trovato con id: " + documentoId));
+                .orElseThrow(() -> new ResourceNotFoundException("Documento", "id", documentoId));
         doc.setStato(StatoDocumento.APPROVATO);
         documentoRepo.save(doc);
     }
@@ -51,7 +52,7 @@ public class CollaboratoreServiceImpl extends UtenteServiceImpl implements Colla
     @Override
     public void rifiutaDocumento(Long documentoId, String motivazione) {
         Documento doc = documentoRepo.findById(documentoId)
-                .orElseThrow(() -> new RuntimeException("Documento non trovato con id: " + documentoId));
+                .orElseThrow(() -> new ResourceNotFoundException("Documento", "id", documentoId));
         doc.setStato(StatoDocumento.RIFIUTATO);
         doc.setMotivazioneRifiuto(motivazione);
         documentoRepo.save(doc);
@@ -59,6 +60,6 @@ public class CollaboratoreServiceImpl extends UtenteServiceImpl implements Colla
 
     private Collaboratore trovaCollaboratorePerId(Long id) {
         return collaboratoreRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Collaboratore non trovato con id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Collaboratore", "id", id));
     }
 }

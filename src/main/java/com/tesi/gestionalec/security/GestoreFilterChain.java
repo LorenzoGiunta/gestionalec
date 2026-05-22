@@ -1,5 +1,6 @@
 package com.tesi.gestionalec.security;
 
+import com.tesi.gestionalec.config.CorsConfig;
 import com.tesi.gestionalec.service.impl.UtenteServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,10 +26,10 @@ public class GestoreFilterChain {
     private final UtenteServiceImpl utenteServiceImpl;
     private final FilterAutenticazione filterDiAutenticazione;
     private final PasswordEncoder passwordEncoder;
+    private final CorsConfig corsConfig;
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        // ← UserDetailsService nel costruttore, non più con setUserDetailsService()
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(utenteServiceImpl);
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
@@ -44,16 +45,21 @@ public class GestoreFilterChain {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
+                        // rifiuto invito accessibile senza login (link diretto da email)
+                        .requestMatchers("/api/inviti/*/rifiuta").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("AMMINISTRATORE")
                         .requestMatchers("/api/commercialista/**").hasRole("COMMERCIALISTA")
                         .requestMatchers("/api/collaboratore/**").hasRole("COLLABORATORE")
                         .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
                         .anyRequest().authenticated()
                 )
+
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(filterDiAutenticazione,
                         UsernamePasswordAuthenticationFilter.class);

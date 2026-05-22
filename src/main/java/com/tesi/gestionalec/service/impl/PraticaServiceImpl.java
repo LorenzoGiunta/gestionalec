@@ -1,14 +1,18 @@
 package com.tesi.gestionalec.service.impl;
 
 
+import com.tesi.gestionalec.exception.ResourceNotFoundException;
 import com.tesi.gestionalec.model.*;
 import com.tesi.gestionalec.observer.GestoreNotifiche;
 import com.tesi.gestionalec.repository.CollaboratoreRepo;
 import com.tesi.gestionalec.repository.PraticaRepo;
 import com.tesi.gestionalec.service.interfaces.PraticaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -43,12 +47,17 @@ public class PraticaServiceImpl implements PraticaService {
     @Override
     public Pratica trovaPerId(Long id) {
         return praticaRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pratica non trovata con id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Pratica", "id", id));
     }
 
     @Override
     public List<Pratica> trovaTutte() {
         return praticaRepo.findAll();
+    }
+
+    @Override
+    public Page<Pratica> trovaTutte(Pageable pageable) {
+        return praticaRepo.findAll(pageable);
     }
 
     @Override
@@ -85,7 +94,7 @@ public class PraticaServiceImpl implements PraticaService {
         Pratica pratica = trovaPerId(praticaId);
 
         Collaboratore collaboratore = collaboratoreRepo.findById(collaboratoreId)
-                .orElseThrow(() -> new RuntimeException("Collaboratore non trovato con id: " + collaboratoreId));
+                .orElseThrow(() -> new ResourceNotFoundException("Collaboratore", "id", collaboratoreId));
 
         pratica.setAssegnataA(collaboratore);
         praticaRepo.save(pratica);
@@ -102,5 +111,19 @@ public class PraticaServiceImpl implements PraticaService {
     @Override
     public List<Pratica> trovaPerStato(StatoPratica stato) {
         return praticaRepo.findByStato(stato);
+    }
+
+    /**
+     * Soft Delete: non cancella il record dal DB.
+     * Imposta deleted=true e registra il timestamp. La pratica e i documenti
+     * collegati rimangono intatti per storico e audit fiscale.
+     * La @SQLRestriction sull'entità li nasconde automaticamente da tutte le query.
+     */
+    @Override
+    public void eliminaPratica(Long id) {
+        Pratica pratica = trovaPerId(id);
+        pratica.setDeleted(true);
+        pratica.setDeletedAt(LocalDateTime.now());
+        praticaRepo.save(pratica);
     }
 }
